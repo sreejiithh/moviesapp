@@ -15,7 +15,7 @@ class Popular extends StatelessWidget {
         backgroundColor: Colors.transparent,
         title: Center(
           child: Text(
-            "Popular Movies",
+            "Populllllar Movies",
             style: GoogleFonts.abhayaLibre(
                 color: Colors.white,
                 fontSize: 24,
