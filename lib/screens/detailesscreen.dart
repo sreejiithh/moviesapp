@@ -72,25 +72,14 @@ class DetailsScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey),
                                 borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(movie!.releaseDate!="No Data Available" ?
-                                  "Release date : ${movie!.releaseDate}" :
-                                     movie!.mediaType=="No Data Available"? "Media Type : ":"Media Type : ${movie.mediaType}"  ,
-                                      style: GoogleFonts.roboto(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold)),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(movie.releaseDate,
-                                      style: GoogleFonts.roboto(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w400)),
-                                )
-                              ],
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(movie!.releaseDate!="No Data Available" ?
+                              "Release date : ${movie!.releaseDate}" :
+                                 movie!.mediaType=="No Data Available"? "Media Type : No Data Available ":"Media Type : ${movie.mediaType}"  ,
+                                  style: GoogleFonts.roboto(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold)),
                             ),
                           ),
                         ),
@@ -104,7 +93,7 @@ class DetailsScreen extends StatelessWidget {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Text("Rating :",
+                                  child: Text("Rating : ${movie.voteAverge.toStringAsFixed(1)}/10",
                                       style: GoogleFonts.roboto(
                                           fontSize: 17,
                                           fontWeight: FontWeight.bold)),
@@ -113,14 +102,7 @@ class DetailsScreen extends StatelessWidget {
                                   Icons.star,
                                   color: Colors.amberAccent,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                      '${movie.voteAverge.toStringAsFixed(1)}/10',
-                                      style: GoogleFonts.roboto(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold)),
-                                )
+
                               ],
                             ),
                           ),

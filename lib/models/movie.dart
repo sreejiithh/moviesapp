@@ -24,7 +24,7 @@ class Movie {
       title: json["title"]??"",
       backDropPath: json["backdrop_path"]??"",
       orginalTitle: json["original_title"]??"",
-      overview: json["overview"],
+      overview: json["overview"] ?? "",
       posterPath: json["poster_path"]??"",
       releaseDate: json["release_date"]??"No Data Available",
       mediaType: json["media_type"]??"No Data Available",

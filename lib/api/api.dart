@@ -13,8 +13,8 @@ class Api {
       "https://api.themoviedb.org/3/movie/upcoming?api_key=${Constants.apiKey}";
   static const _tvEpisodes=
   "https://api.themoviedb.org/3/discover/tv?api_key=${Constants.apiKey}";
-  static const _popular=
-  "https://api.themoviedb.org/3/person/popular?api_key=${Constants.apiKey}";
+  static const _nowPlaying=
+  "https://api.themoviedb.org/3/movie/now_playing?api_key=${Constants.apiKey}";
 
 
   Future<List<Movie>> getTrendingMovies()async{
@@ -53,8 +53,8 @@ class Api {
       throw Exception('Something happend');
     }
   }
-  Future<List<Movie>> getPopular()async{
-    final response= await http.get(Uri.parse(_popular));
+  Future<List<Movie>> getNowPlaying()async{
+    final response= await http.get(Uri.parse(_nowPlaying));
     if(response.statusCode==200){
       var decodedData=json.decode(response.body)['results']as List;
       return decodedData.map((movie)=>Movie.fromJson(movie)).toList();

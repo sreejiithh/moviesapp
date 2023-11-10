@@ -2,12 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movies2/widget/homescreen.dart';
-import 'package:movies2/components/squaretile.dart';
-import 'package:movies2/components/textfield.dart';
+import '../components/mybutton.dart';
+import '../components/squaretile.dart';
+import '../components/textfield.dart';
 
 class Loginpage extends StatefulWidget {
+  final Function()? onTap;
 
-  Loginpage({super.key});
+  Loginpage({super.key, this.onTap});
 
   @override
   State<Loginpage> createState() => _LoginpageState();
@@ -15,37 +17,50 @@ class Loginpage extends StatefulWidget {
 
 class _LoginpageState extends State<Loginpage> {
   final TextEditingController emailController = TextEditingController();
-
   final TextEditingController passwordController = TextEditingController();
 
   void SignInUserIn() async {
+// show loading circle
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(child: CircularProgressIndicator());
+      },
+    );
+
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text);
-      Snack("Success");
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Homescreen(),));
-    }on FirebaseAuthException catch (e){
-      Snack("Please enter your email and password");
-      print(e);
-      print(e.code);
-      if(e.code=="Invalid email"){
-        Snack("Email not found");
-      }else if(e.code=="Invalid"){
-        print(e.code);
-        Snack("Password");
-      }
+          email: emailController.text, password: passwordController.text);
+
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => Homescreen(),));
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      ShowErrorMessage(e.code);
     }
   }
 
-    Snack(data){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text(data)));
-    }
+  void ShowErrorMessage(String meassage) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          elevation: 0,
+          shape: UnderlineInputBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
+          title: Text(
+            meassage,
+            style: GoogleFonts.aBeeZee(fontSize: 14, color: Colors.red),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: Colors.grey[300],
       body: ClipRRect(
         child: SafeArea(
           child: Center(
@@ -59,7 +74,7 @@ class _LoginpageState extends State<Loginpage> {
                     Icon(
                       Icons.lock,
                       size: 100,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                     SizedBox(
                       height: 50,
@@ -67,7 +82,7 @@ class _LoginpageState extends State<Loginpage> {
                     Text(
                       "Welcome back you've been missed!",
                       style: GoogleFonts.dmSerifDisplay(
-                          color: Colors.white, fontSize: 16),
+                          color: Colors.black87, fontSize: 16),
                     ),
                     SizedBox(
                       height: 25,
@@ -93,15 +108,9 @@ class _LoginpageState extends State<Loginpage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          TextButton(
-                            onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => Loginpage(),));
-                            },
-                            child: Text(
-                              "forgot password?",
-                              style: TextStyle(
-                                  color: Colors.white,),
-                            ),
+                          Text(
+                            "Forget Password?",
+                            style: TextStyle(color: Colors.grey[600]),
                           ),
                         ],
                       ),
@@ -109,25 +118,10 @@ class _LoginpageState extends State<Loginpage> {
                     SizedBox(
                       height: 25,
                     ),
-                SizedBox(
-                  height: 50,
-                  width: 320,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Homescreen(),));
-                    },
-                    child: Text(
-                      "Signin",
-                      style: TextStyle(fontStyle: FontStyle.italic,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                    Mybutton(
+                      text: "SignIn",
+                      onTap: SignInUserIn,
                     ),
-                    style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStatePropertyAll(Colors.white)),
-                  ),
-                ),
                     SizedBox(
                       height: 50,
                     ),
@@ -137,23 +131,23 @@ class _LoginpageState extends State<Loginpage> {
                         children: [
                           Expanded(
                               child: Divider(
-                                thickness: 0.5,
-                                color: Colors.white,
-                              )),
+                            thickness: 0.5,
+                            color: Colors.grey[400],
+                          )),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 25),
                             child: Text(
                               "Or continue with",
                               style: TextStyle(
                                   fontWeight: FontWeight.w600,
-                                  color: Colors.white),
+                                  color: Colors.grey[700]),
                             ),
                           ),
                           Expanded(
                               child: Divider(
-                                thickness: 0.5,
-                                color: Colors.white,
-                              ))
+                            thickness: 0.5,
+                            color: Colors.grey[400],
+                          ))
                         ],
                       ),
                     ),
@@ -169,7 +163,7 @@ class _LoginpageState extends State<Loginpage> {
                         SizedBox(
                           width: 25,
                         ),
-                        SqaurTile(imagePath: "lib/images/apple.png",)
+                        SqaurTile(imagePath: "lib/images/apple.png")
                       ],
                     ),
                     SizedBox(
@@ -180,21 +174,19 @@ class _LoginpageState extends State<Loginpage> {
                       children: [
                         Text(
                           "Not a member?",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.grey[700]),
                         ),
                         SizedBox(
                           width: 6,
                         ),
-                        TextButton(
-                          onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Loginpage(),));
-                          },
-                            child: Text(
-                              "Register Now",
-                              style: TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold),
-                            ),
+                        GestureDetector(
+                          onTap: widget.onTap,
+                          child: Text(
+                            "Register Now",
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ],
                     )

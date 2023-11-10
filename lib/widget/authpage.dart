@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:movies2/widget/loginorregister.dart';
 import 'loginpage.dart';
 import 'package:movies2/widget/homescreen.dart';
 
@@ -18,7 +19,7 @@ class Authpage extends StatelessWidget {
           }
           // user is not logeed in
           else {
-            return Loginpage();
+            return LoginorRegisterPage();
           }
         },
       ),

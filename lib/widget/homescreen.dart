@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movies2/api/api.dart';
 import 'package:movies2/models/movie.dart';
-import 'package:movies2/popular.dart';
 import 'package:movies2/tvepisodes.dart';
 import 'package:movies2/widget/loadingskeleton.dart';
+import 'package:movies2/widget/nowplaying.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'colors.dart';
 import 'movieslider.dart';
@@ -23,7 +23,7 @@ class _HomescreenState extends State<Homescreen> {
   late Future<List<Movie>> topRatedMovies;
   late Future<List<Movie>> upComingMovies;
   late Future<List<Movie>> tvEpisode;
-  late Future<List<Movie>> popularmovie;
+  late Future<List<Movie>> nowPlaying;
 
   @override
   initState() {
@@ -32,7 +32,7 @@ class _HomescreenState extends State<Homescreen> {
     topRatedMovies = Api().getTopRatedMovies();
     upComingMovies = Api().getUpcomingMovies();
     tvEpisode = Api().getTvEpisodes();
-    popularmovie = Api().getPopular();
+    nowPlaying = Api().getNowPlaying();
   }
 
   @override
@@ -60,36 +60,54 @@ class _HomescreenState extends State<Homescreen> {
                 style: GoogleFonts.abhayaLibre(
                     fontSize: 26, fontWeight: FontWeight.bold),
               )),
-            FutureBuilder(future: tvEpisode, builder: (context,snapshot){
-              final Tvepisode= snapshot.data;
-              return   ListTile(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Tvepisodes(TvEpisode: Tvepisode,),));
-                },
-                leading: Icon(
-                  Icons.tv,
-                ),
-                title: Text(
-                  "TV Episodes",
-                  style: GoogleFonts.aBeeZee(fontSize: 16,letterSpacing: 2),
-                ),
-              );
-            }),
-             FutureBuilder(future: popularmovie, builder: (context,snapshot){
-               final Popularmovie=snapshot.data;
-               return  ListTile(
-                 onTap: () {
-                   Navigator.push(context, MaterialPageRoute(builder: (context) => Popular(Popularmovie: Popularmovie,),));
-                 },
-                 leading: Icon(
-                   Icons.trending_up,
-                 ),
-                 title: Text(
-                   "Popular",
-                   style: GoogleFonts.aBeeZee(fontSize: 16,letterSpacing: 2),
-                 ),
-               );
-             })
+              FutureBuilder(
+                  future: tvEpisode,
+                  builder: (context, snapshot) {
+                    final Tvepisode = snapshot.data;
+                    return ListTile(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Tvepisodes(
+                                TvEpisode: Tvepisode,
+                              ),
+                            ));
+                      },
+                      leading: Icon(
+                        Icons.connected_tv,
+                      ),
+                      title: Text(
+                        "TV Episodes",
+                        style:
+                            GoogleFonts.aBeeZee(fontSize: 16, letterSpacing: 2),
+                      ),
+                    );
+                  }),
+              FutureBuilder(
+                  future: nowPlaying,
+                  builder: (context, snapshot) {
+                    final Nowplayingepisode = snapshot.data;
+                    return ListTile(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Nowplaying(
+                                Nowplayingepisode: Nowplayingepisode,
+                              ),
+                            ));
+                      },
+                      leading: Icon(
+                        Icons.live_tv,
+                      ),
+                      title: Text(
+                        "Now Playing",
+                        style:
+                            GoogleFonts.aBeeZee(fontSize: 16, letterSpacing: 2),
+                      ),
+                    );
+                  })
             ],
           )),
       body: SingleChildScrollView(
@@ -119,8 +137,10 @@ class _HomescreenState extends State<Homescreen> {
                     );
                   } else {
                     // Show a loading indicator or placeholder widget
-                    return Skeletonizer(child: LoadingSkeleton(),
-                    enabled: true,);
+                    return Skeletonizer(
+                      child: LoadingSkeleton(),
+                      enabled: true,
+                    );
                   }
                 },
               ),

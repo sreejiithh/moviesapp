@@ -38,12 +38,13 @@ dependencies:
   google_fonts: ^6.1.0
   http: ^1.1.0
   carousel_slider: ^4.2.1
-  firebase_core: ^2.21.0
+  firebase_core: ^2.22.0
   cloud_firestore: ^4.12.2
   firebase_storage: ^11.4.1
   firebase_auth: ^4.12.1
   easy_search_bar: ^2.5.0
   skeletonizer: ^0.8.0
+  google_sign_in: ^6.1.6
 
 dev_dependencies:
   flutter_test:
